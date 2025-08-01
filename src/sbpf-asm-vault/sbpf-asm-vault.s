@@ -116,7 +116,7 @@ deposit:
   ##########################
 
   mov64 r9, r5
-  sub64 r9, 48
+  sub64 r9, 32
 
   # Owner
   mov64 r2, r9
@@ -136,16 +136,6 @@ deposit:
   ldxb r3, [r1 + VAULT_HEADER + 2]
   stxb [r2 + 8], r3                                               # is_writable
   ldxb r3, [r1 + VAULT_HEADER + 1]
-  stxb [r2 + 9], r3                                               # is_signer
-
-  # System program
-  add64 r2, 16
-  mov64 r3, r1
-  add64 r3, SYSTEM_PROGRAM_KEY
-  stxdw [r2 + 0], r3                                              # pubkey
-  ldxb r3, [r1 + SYSTEM_PROGRAM_HEADER + 2]
-  stxb [r2 + 8], r3                                               # is_writable
-  ldxb r3, [r1 + SYSTEM_PROGRAM_HEADER + 1]
   stxb [r2 + 9], r3                                               # is_signer
 
   #############################
@@ -174,7 +164,7 @@ deposit:
   stxdw [r2 + 0], r3                                              # program_id
   mov64 r3, r9
   stxdw [r2 + 8], r3                                              # accounts      
-  lddw r3, 3
+  lddw r3, 2
   stxdw [r2 + 16], r3                                             # account_len
   mov64 r3, r8
   stxdw [r2 + 24], r3                                             # data                   
@@ -186,7 +176,7 @@ deposit:
   ##########################
 
   mov64 r6, r7
-  sub64 r6, 168
+  sub64 r6, 112
 
   # Owner
   mov64 r2, r6
@@ -238,39 +228,13 @@ deposit:
   ldxb r3, [r1 + VAULT_HEADER + 3]
   stxb [r2 + 50], r3                                              # is_executable
 
-  # System program
-  add64 r2, 56
-  mov64 r3, r1
-  add64 r3, SYSTEM_PROGRAM_KEY
-  stxdw [r2 + 0], r3                                              # key
-  mov64 r3, r1
-  add64 r3, SYSTEM_PROGRAM_LAMPORTS
-  stxdw [r2 + 8], r3                                              # lamports
-  ldxdw r3, [r1 + SYSTEM_PROGRAM_DATA_LEN]
-  stxdw [r2 + 16], r3                                             # data_len
-  mov64 r3, r1
-  add64 r3, SYSTEM_PROGRAM_DATA
-  stxdw [r2 + 24], r3                                             # data
-  mov64 r3, r1
-  add64 r3, SYSTEM_PROGRAM_OWNER
-  stxdw [r2 + 32], r3                                             # owner
-  ldxdw r3, [r1 + SYSTEM_PROGRAM_RENT_EPOCH]
-  stxdw [r2 + 40], r3                                             # rent_epoch
-  ldxb r3, [r1 + SYSTEM_PROGRAM_HEADER + 1]
-  stxb [r2 + 48], r3                                              # is_signer
-  ldxb r3, [r1 + SYSTEM_PROGRAM_HEADER + 2]
-  stxb [r2 + 49], r3                                              # is_writable
-  ldxb r3, [r1 + SYSTEM_PROGRAM_HEADER + 3]
-  stxb [r2 + 50], r3                                              # is_executable
-
-
   ####################
   ## Invoke the CPI ##
   ####################
   
   mov64 r1, r7                                                    # Instruction
   mov64 r2, r6                                                    # Account infos
-  lddw r3, 3                                                      # Number of account infos
+  lddw r3, 2                                                      # Number of account infos
   lddw r4, 0                                                      # Seeds (none required)
   lddw r5, 0                                                      # Seeds count
   call sol_invoke_signed_c
@@ -284,7 +248,7 @@ withdraw:
   ##########################
 
   mov64 r9, r5
-  sub64 r9, 48
+  sub64 r9, 32
 
   # Vault
   mov64 r2, r9
@@ -305,16 +269,6 @@ withdraw:
   ldxb r3, [r1 + OWNER_HEADER + 2]
   stxb [r2 + 8], r3                                               # is_writable
   ldxb r3, [r1 + OWNER_HEADER + 1]
-  stxb [r2 + 9], r3                                               # is_signer
-
-  # System program
-  add64 r2, 16
-  mov64 r3, r1
-  add64 r3, SYSTEM_PROGRAM_KEY
-  stxdw [r2 + 0], r3                                              # pubkey
-  ldxb r3, [r1 + SYSTEM_PROGRAM_HEADER + 2]
-  stxb [r2 + 8], r3                                               # is_writable
-  ldxb r3, [r1 + SYSTEM_PROGRAM_HEADER + 1]
   stxb [r2 + 9], r3                                               # is_signer
 
   #############################
@@ -343,7 +297,7 @@ withdraw:
   stxdw [r2 + 0], r3                                              # program_id
   mov64 r3, r9
   stxdw [r2 + 8], r3                                              # accounts      
-  lddw r3, 3
+  lddw r3, 2
   stxdw [r2 + 16], r3                                             # account_len
   mov64 r3, r8
   stxdw [r2 + 24], r3                                             # data                   
@@ -355,7 +309,7 @@ withdraw:
   ##########################
 
   mov64 r6, r7
-  sub64 r6, 168
+  sub64 r6, 112
 
   # Vault
   mov64 r2, r6
@@ -408,31 +362,6 @@ withdraw:
   ldxb r3, [r1 + OWNER_HEADER + 3]
   stxb [r2 + 50], r3                                              # is_executable
 
-  # System program
-  add64 r2, 56
-  mov64 r3, r1
-  add64 r3, SYSTEM_PROGRAM_KEY
-  stxdw [r2 + 0], r3                                              # key
-  mov64 r3, r1
-  add64 r3, SYSTEM_PROGRAM_LAMPORTS
-  stxdw [r2 + 8], r3                                              # lamports
-  ldxdw r3, [r1 + SYSTEM_PROGRAM_DATA_LEN]
-  stxdw [r2 + 16], r3                                             # data_len
-  mov64 r3, r1
-  add64 r3, SYSTEM_PROGRAM_DATA
-  stxdw [r2 + 24], r3                                             # data
-  mov64 r3, r1
-  add64 r3, SYSTEM_PROGRAM_OWNER
-  stxdw [r2 + 32], r3                                             # owner
-  ldxdw r3, [r1 + SYSTEM_PROGRAM_RENT_EPOCH]
-  stxdw [r2 + 40], r3                                             # rent_epoch
-  ldxb r3, [r1 + SYSTEM_PROGRAM_HEADER + 1]
-  stxb [r2 + 48], r3                                              # is_signer
-  ldxb r3, [r1 + SYSTEM_PROGRAM_HEADER + 2]
-  stxb [r2 + 49], r3                                              # is_writable
-  ldxb r3, [r1 + SYSTEM_PROGRAM_HEADER + 3]
-  stxb [r2 + 50], r3                                              # is_executable
-
   ##########################
   ##  Set up signer seeds ##
   ##########################
@@ -452,7 +381,7 @@ withdraw:
   
   mov64 r1, r7                                                    # Instruction
   mov64 r2, r6                                                    # Account infos
-  lddw r3, 3                                                      # Number of account infos
+  lddw r3, 2                                                      # Number of account infos
   mov64 r4, r9                                                    # Seeds
   lddw r5, 1                                                      # Seeds count
   call sol_invoke_signed_c
@@ -460,9 +389,9 @@ withdraw:
   exit
 
 error_invalid_instruction:
-  lddw r0, 11
+  lddw r0, 0xb
   exit
 
 error_invalid_pda:
-  lddw r0, 12
+  lddw r0, 0xc
   exit
